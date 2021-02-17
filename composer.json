@@ -21,7 +21,6 @@
         "friendsofphp/php-cs-fixer": "^2.13",
         "phpstan/phpstan": "^0.10.6",
         "phpunit/phpunit": "^7.4",
-        "prolic/fpp": "dev-master",
         "roave/security-advisories": "dev-master",
         "symfony/phpunit-bridge": "4.2.*"
     },

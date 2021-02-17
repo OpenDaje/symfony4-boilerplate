@@ -116,9 +116,6 @@
             "ref": "89239f0cf2759efccc76b9944083bfcc4d180f9d"
         }
     },
-    "prolic/fpp": {
-        "version": "dev-master"
-    },
     "psr/cache": {
         "version": "1.0.1"
     },
