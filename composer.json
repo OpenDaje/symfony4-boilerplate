@@ -1,5 +1,5 @@
 {
-    "name": "OpenDaje Symfony boilerplate",
+    "name": "opendaje/symfony4-boilerplate",
     "type": "project",
     "description": "OpenDaje Symfony LTS boilerplate.",
     "keywords": ["OpenDaje", "open data", "symfony", "symfony boilerplate"],
