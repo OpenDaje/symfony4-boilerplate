@@ -212,8 +212,11 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "1.0",
-            "ref": "5f8a51c0fad684396f6b6c0fd770e043439cb632"
-        }
+            "ref": "c0eeb50665f0f77226616b6038a9b06c03752d8e"
+        },
+        "files": [
+            ".env"
+        ]
     },
     "symfony/framework-bundle": {
         "version": "4.2",
