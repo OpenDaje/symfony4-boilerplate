@@ -1,7 +1,6 @@
 version: "3"
 services:
   php:
-    #image: php:7.2
     image: webdevops/php-dev:7.2
     depends_on:
       - mysql
@@ -9,7 +8,6 @@ services:
       - mysql
 
   nginx:
-    #image: nginx:1.14
     image: webdevops/nginx:alpine
     depends_on:
       - php
