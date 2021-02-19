@@ -1,3 +1,4 @@
+SHELL='/bin/bash'
 # Makefile
 #
 # This file contains the commands most used in DEV, plus the ones used in CI and PRD environments.
@@ -6,9 +7,14 @@
 # Mute all `make` specific output. Comment this out to get some debug information.
 .SILENT:
 
+ifndef APP_CONTAINER
+APP_CONTAINER=docker-compose exec php
+endif
+
+
 # .DEFAULT: If the command does not exist in this makefile
 # default:  If no command was specified
-.DEFAULT default:
+.DEFAULT:
 	if [ -f ./Makefile.custom ]; then \
 	    $(MAKE) -f Makefile.custom "$@"; \
 	else \
@@ -17,61 +23,53 @@
 	    if [ "$@" != "" ]; then exit 2; fi; \
 	fi
 
-help:
+
+.PHONY: help
+help: ## Show help menu
 	@echo "Usage:"
 	@echo "     make [command]"
 	@echo
 	@echo "Available commands:"
-	@grep '^[^#[:space:]].*:' Makefile | grep -v '^default' | grep -v '^\.' | grep -v '=' | grep -v '^_' | sed 's/://' | xargs -n 1 echo ' -'
+	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+#	@grep '^[^#[:space:]].*:' Makefile | grep -v '^default' | grep -v '^\.' | grep -v '=' | grep -v '^_' | sed 's/://' | xargs -n 1 echo ' -'
+
+
 
 ########################################################################################################################
 
 
-CONTAINER_API="symfony4boilerplate_php_1"
-
-
-#   We run this in tst ENV so that we never run it with xdebug on
-code-analyse:
-	echo "    - Execution: phpstan"
-	php vendor/bin/phpstan analyse
-
-
-cs-fix:
-	echo "    "
-	echo "    - Execution: php-cs-fixer"
-	echo "    - Fixing code style in src/"
-	php vendor/bin/php-cs-fixer fix src --verbose
-	#echo "    "
-	#echo "    - Execution: php-cs-fixer"
-	#echo "    - Fixing code style in test/"
-	#php vendor/bin/php-cs-fixer fix tests --verbose
-	#php vendor/bin/php-cs-fixer fix core --verbose
-	#php vendor/bin/php-cs-fixer fix lib --verbose
-
-
-cs-fix-check:
-	echo "    - Execution: php-cs-fixer"
-	echo "    - Checking code style in src/"
-	php vendor/bin/php-cs-fixer fix src --dry-run --verbose
-	#echo "    "
-	#echo "    - Execution: php-cs-fixer"
-	#echo "    - Checking code style in test/"
-	#php vendor/bin/php-cs-fixer fix tests --dry-run --verbose
-	#php vendor/bin/php-cs-fixer fix core --dry-run --verbose
-	#php vendor/bin/php-cs-fixer fix lib --dry-run --verbose
-
-
-
-
-shell:
-	docker exec -it ${CONTAINER_API} bash
-
-up:
-	#if [ ! -f ${DB_PATH} ]; then $(MAKE) db-setup; fi
-	#$(eval UP=ENV=dev docker-compose  up -d -t 0)
-	#$(eval DOWN=ENV=dev docker-compose  down -t 0)
-	#- bash -c "trap '${DOWN}' EXIT; ${UP}"
+.PHONY: up
+up: ## Start docker containers
 	- docker-compose  up -d
 
-down:
+
+.PHONY: down
+down: ## Stop docker containers
 	- docker-compose  down --volumes --remove-orphans
+
+
+.PHONY: status
+status: ## Show docker containers status
+	- docker-compose ps
+
+
+.PHONY: bash
+bash: ## Get bash inside application container
+	#- @HOST_UID=$(HOST_UID) HOST_GID=$(HOST_GID) docker-compose exec php bash
+	- docker-compose exec php bash
+
+
+.PHONY: cs
+cs: ## Run code style analysis
+	$(APP_CONTAINER) php vendor/bin/php-cs-fixer fix src --dry-run --verbose
+
+
+.PHONY: cs-fix
+cs-fix: ## Fix code style issues
+	$(APP_CONTAINER) php vendor/bin/php-cs-fixer fix src --verbose
+
+
+.PHONY: stan
+stan: ## Static analysis with phpstan
+	echo "    - Execution: phpstan"
+	$(APP_CONTAINER) php vendor/bin/phpstan analyse
