@@ -4,8 +4,10 @@ includes:
 
 parameters:
     level: 7
+    
     paths:
       - src
-      - lib/src
-      - core/SharedKernel/src
-      - core/Identity/src
+      - tests
+
+    excludes_analyse:
+        - '%currentWorkingDirectory%/tests/bootstrap.php'
