@@ -126,3 +126,176 @@ jobs:
       -
         name: Run PHP-CS-Fixer fix
         run: vendor/bin/phpstan analyse --ansi
+
+
+  phpunit:
+    name: Code tests (PHP ${{ matrix.php }})
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:5.7
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: false
+          MYSQL_ROOT_PASSWORD: symfony
+          MYSQL_DATABASE: symfony
+        ports:
+          - 3306/tcp
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+    strategy:
+      matrix:
+        php:
+          - '7.2'
+        node:
+          - '10.x'
+        include:
+          - php: '7.2'
+            coverage: true
+      fail-fast: false
+
+    steps:
+      -
+        name: Checkout
+        uses: actions/checkout@v2
+      -
+        name: Setup php extension cache environment
+        id: cache-php-extensions
+        uses: shivammathur/cache-extensions@v1
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          key: ${{ env.PHP_EXTENSIONS_CACHE_KEY }}
+      -
+        name: Cache PHP extensions
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.cache-php-extensions.outputs.dir }}
+          key: ${{ steps.cache-php-extensions.outputs.key }}
+          restore-keys: ${{ steps.cache-php-extensions.outputs.key }}
+
+      -
+        name: setup-php
+        id: setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: date.timezone=Europe/Rome, memory_limit=-1
+          coverage: xdebug
+          tools: symfony
+      
+      -
+        name: Reveal env vars
+        run: |
+          echo GITHUB_WORKFLOW   = $GITHUB_WORKFLOW
+          echo HOME              = $HOME
+          echo GITHUB_ACTION     = $GITHUB_ACTION
+          echo GITHUB_ACTIONS    = $GITHUB_ACTIONS
+          echo GITHUB_ACTOR      = $GITHUB_ACTOR
+          echo GITHUB_REPOSITORY = $GITHUB_REPOSITORY
+          echo GITHUB_EVENT_NAME = $GITHUB_EVENT_NAME
+          echo GITHUB_EVENT_PATH = $GITHUB_EVENT_PATH
+          echo GITHUB_WORKSPACE  = $GITHUB_WORKSPACE
+          echo GITHUB_SHA        = $GITHUB_SHA
+          echo GITHUB_REF        = $GITHUB_REF
+      
+      -
+        name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+      
+      -
+        name: Cache dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      
+      -
+        name: Install Composer dependencies
+        run: composer install --prefer-dist --no-progress --no-suggest --ansi --no-scripts
+      # -
+      #   name: Run Migration
+      #   run: |
+      #     php bin/console doctrine:schema:update --force || echo "No migrations found or schema update failed"
+      #     php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
+      #   env:
+      #     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
+      
+      -
+        name: Enable code coverage
+        if: matrix.coverage
+        run: echo "COVERAGE=1" >> $GITHUB_ENV
+      
+      -
+        name: Install PHPUnit
+        run: bin/phpunit install
+      
+      -
+        name: Run Unit tests
+        #if: ${{ matrix.php == '7.2' }}
+        run: |
+          mkdir -p reports/phpunit
+          if [ "$COVERAGE" = '1' ]; then
+            bin/phpunit --testsuite unit --coverage-clover reports/phpunit/unit-test-clover.xml --log-junit reports/phpunit/unit-test-junit.xml --colors=always
+          else
+            bin/phpunit --testsuite unit --colors=always
+          fi
+      
+      -
+        name: Run Integration tests
+        #if: ${{ matrix.php == '7.2' }}
+        run: |
+          mkdir -p reports/phpunit
+          if [ "$COVERAGE" = '1' ]; then
+            bin/phpunit --testsuite integration --coverage-clover reports/phpunit/integration-test-clover.xml --log-junit reports/phpunit/integration-test-junit.xml --colors=always
+          else
+            bin/phpunit --testsuite integration --colors=always
+          fi
+        env:
+          DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
+
+      # -
+      #   name: Run webserver
+      #   if: ${{ matrix.php == '7.2' }}
+      #   run: symfony server:start --port=8080 --dir=public --daemon --no-tls
+      
+      -
+        name: Run Functional tests
+        #if: ${{ matrix.php == '7.3' }}
+        run: |
+          mkdir -p reports/phpunit
+          if [ "$COVERAGE" = '1' ]; then
+            bin/phpunit --testsuite functional --coverage-clover reports/phpunit/functional-test-clover.xml --log-junit reports/phpunit/functional-test-junit.xml --colors=always
+          else
+            bin/phpunit --testsuite functional --colors=always
+          fi
+        env:
+          DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
+
+      # -
+      #   name: Upload coverage to Codecov
+      #   #if: ${{ matrix.php == '7.3' }}
+      #   uses: codecov/codecov-action@v1
+      #   with:
+      #     files: ./reports/phpunit/unit-test-clover.xml,./reports/phpunit/integration-test-clover.xml,./reports/phpunit/functional-test-clover.xml
+      #     flags: phpunit-tests
+      #     name: codecov-php-7.3
+      #     fail_ci_if_error: true
+      
+      # -
+      #   name: SonarCloud Change paths in clover.xml files before Scan
+      #   #if: ${{ matrix.php == '7.3' }}
+      #   run: |
+      #     sed -i 's+/home/runner/work/pro-appointments/pro-appointments+/github/workspace+g' ./reports/phpunit/unit-test-clover.xml
+      #     sed -i 's+/home/runner/work/pro-appointments/pro-appointments+/github/workspace+g' ./reports/phpunit/integration-test-clover.xml
+      #     sed -i 's+/home/runner/work/pro-appointments/pro-appointments+/github/workspace+g' ./reports/phpunit/functional-test-clover.xml          #sed -i 's+/home/runner/work/component-value-objects/component-value-objects+/github/workspace+g' ./var/coverage/clover.xml
+      
+      # -
+      #   name: SonarCloud Scan And publication (only php-${{ matrix.php }})
+      #   #if: ${{ matrix.php == '7.3' }}
+      #   uses: sonarsource/sonarcloud-github-action@master
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      #   continue-on-error: true
