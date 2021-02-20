@@ -71,7 +71,7 @@ jobs:
       -
         name: QA - Run composer normalize
         run: composer-normalize --dry-run --diff
-        continue-on-error: true
+        continue-on-error: false
       -
         name: QA - Run composer unused
         run: composer-unused
