@@ -1,17 +1,18 @@
 name: Code check fast
 
-# on:
-#   push:
-
-
-#   pull_request:
-#     branches: [ master ]
 on:
-  workflow_run:
-    workflows: ["Base Check"]
-    branches: [main]
-    types: 
-      - completed
+  push:
+
+
+  pull_request:
+    branches: [ master ]
+
+# on:
+#   workflow_run:
+#     workflows: ["Base Check"]
+#     branches: [main]
+#     types: 
+#       - completed
 
 env:
   GITHUB_PAT: ${{ secrets.SF4_BOILERPLATE_GHA_PAT }}
@@ -30,7 +31,7 @@ jobs:
       matrix:
         php:
           - '7.2'
-      fail-fast: false
+      fail-fast: true
     
     steps:
       -
@@ -86,7 +87,7 @@ jobs:
       matrix:
         php:
           - '7.2'
-      fail-fast: false
+      fail-fast: true
     
     steps:
       -
@@ -156,7 +157,7 @@ jobs:
         include:
           - php: '7.2'
             coverage: true
-      fail-fast: false
+      fail-fast: true
 
     steps:
       -
