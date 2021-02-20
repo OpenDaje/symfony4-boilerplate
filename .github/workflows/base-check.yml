@@ -1,11 +1,18 @@
 name: Base Check
 
+# on:
+#   push:
+
+
+#   pull_request:
+#     branches: [ master ]
+
 on:
-  push:
-
-
-  pull_request:
-    branches: [ master ]
+  workflow_run:
+    workflows: ["code-check-fast"]
+    branches: [main]
+    types: 
+      - completed
 
 
 env:
