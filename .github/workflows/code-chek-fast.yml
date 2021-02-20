@@ -306,3 +306,18 @@ jobs:
       #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       #   continue-on-error: true
+
+  ci-notify:
+    name: ci-notify
+    needs: [phpunit]
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Trigger Publish metrics workflow
+        if: success()
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.SF4_BOILERPLATE_GHA_PAT }}
+          repository: ${{ github.repository }}
+          event-type: pub-metrics
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
