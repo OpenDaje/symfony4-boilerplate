@@ -13,8 +13,13 @@ env:
 jobs:
     lint-composer:
         runs-on: ubuntu-18.04
-        if: "!contains(github.event.*.message, 'composer(deps')"
         timeout-minutes: 5
+        strategy:
+            matrix:
+                php:
+                    - '7.2'
+            fail-fast: true
+
         steps:
             - name: Checkout
               uses: actions/checkout@v2
@@ -61,7 +66,10 @@ jobs:
               run: composer validate --strict --ansi
 
             - name: Run composer normalize
-              run: composer normalize --dry-run --ansi
+              run: composer-normalize --dry-run --ansi
+
+            - name: Run composer unused
+              run: composer unused
 
 
     php-cs-fixer:
