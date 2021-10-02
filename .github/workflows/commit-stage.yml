@@ -71,9 +71,9 @@ jobs:
 #            - name: Run composer unused
 #              run: composer unused
 
-            - name: Run composer require-checker
-              run: |
-                  composer require-checker check composer.json
+#            - name: Run composer require-checker
+#              run: |
+#                  composer require-checker check composer.json
 
 
 
