@@ -307,17 +307,17 @@ jobs:
       #     SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       #   continue-on-error: true
 
-  ci-notify:
-    name: ci-notify
-    needs: [phpunit]
-    runs-on: ubuntu-latest
-    steps:
-      -
-        name: Trigger Publish metrics workflow
-        if: success()
-        uses: peter-evans/repository-dispatch@v1
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          event-type: pub-metrics
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+#  ci-notify:
+#    name: ci-notify
+#    needs: [phpunit]
+#    runs-on: ubuntu-latest
+#    steps:
+#      -
+#        name: Trigger Publish metrics workflow
+#        if: success()
+#        uses: peter-evans/repository-dispatch@v1
+#        with:
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          repository: ${{ github.repository }}
+#          event-type: pub-metrics
+#          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'

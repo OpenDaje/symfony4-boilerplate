@@ -286,3 +286,19 @@ jobs:
                 env:
                     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
 
+
+    ci-notify:
+        name: ci-notify
+        needs: [phpunit]
+        runs-on: ubuntu-latest
+        steps:
+            -
+                name: Trigger Publish metrics workflow
+                if: success()
+                uses: peter-evans/repository-dispatch@v1
+                with:
+                    token: ${{ secrets.GITHUB_TOKEN }}
+                    repository: ${{ github.repository }}
+                    event-type: pub-metrics
+                    client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+
