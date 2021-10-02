@@ -44,8 +44,8 @@ jobs:
               with:
                   php-version: ${{ matrix.php }}
                   extensions: ${{ env.PHP_EXTENSIONS }}
-                  ini-values: date.timezone=Europe/Rome, memory_limit=-1
-                  coverage: xdebug
+                  ini-values: memory_limit=-1
+                  coverage: none
                   tools: composer, composer-normalize, composer-unused, composer-require-checker:2.1.0
 
             - name: Get Composer Cache Directory
@@ -68,8 +68,13 @@ jobs:
             - name: Run composer normalize
               run: composer-normalize --dry-run --ansi
 
-            - name: Run composer unused
-              run: composer unused
+#            - name: Run composer unused
+#              run: composer unused
+
+            - name: Run composer require-checker
+              run: |
+                  composer require-checker check composer.json
+
 
 
     php-cs-fixer:
