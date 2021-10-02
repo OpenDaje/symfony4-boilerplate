@@ -19,15 +19,49 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
-            - name: QA - Run composer validate
-              uses: docker://jakzal/phpqa:php7.4-alpine
+            - name: Setup php extension cache environment
+              id: cache-php-extensions
+              uses: shivammathur/cache-extensions@v1
               with:
-                  args: composer validate --strict --ansi
+                  php-version: ${{ matrix.php }}
+                  extensions: ${{ env.PHP_EXTENSIONS }}
+                  key: ${{ env.PHP_EXTENSIONS_CACHE_KEY }}
 
-            - name: QA - Run composer normalize
-              uses: docker://jakzal/phpqa:php7.4-alpine
+            - name: Cache PHP extensions
+              uses: actions/cache@v2
               with:
-                  args: composer normalize --dry-run --ansi
+                  path: ${{ steps.cache-php-extensions.outputs.dir }}
+                  key: ${{ steps.cache-php-extensions.outputs.key }}
+                  restore-keys: ${{ steps.cache-php-extensions.outputs.key }}
+
+            - name: Setup PHP
+              uses: shivammathur/setup-php@v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  extensions: ${{ env.PHP_EXTENSIONS }}
+                  ini-values: date.timezone=Europe/Rome, memory_limit=-1
+                  coverage: xdebug
+                  tools: composer, composer-normalize, composer-unused, composer-require-checker:2.1.0
+
+            - name: Get Composer Cache Directory
+              id: composer-cache
+              run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+            - name: Cache dependencies
+              uses: actions/cache@v2
+              with:
+                  path: ${{ steps.composer-cache.outputs.dir }}
+                  key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+                  restore-keys: ${{ runner.os }}-composer-
+
+            - name: Install Composer dependencies
+              run: composer install --prefer-dist --no-progress --no-suggest --ansi --no-scripts
+
+            - name: Run composer validate
+              run: composer validate --strict --ansi
+
+            - name: Run composer normalize
+              run: composer normalize --dry-run --ansi
 
 
     php-cs-fixer:
