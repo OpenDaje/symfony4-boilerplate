@@ -11,7 +11,7 @@ on:
 #   workflow_run:
 #     workflows: ["Base Check"]
 #     branches: [main]
-#     types: 
+#     types:
 #       - completed
 
 env:
@@ -22,61 +22,61 @@ env:
 
 
 jobs:
-  php-cs-fixer:
-    #if: ${{ github.event.workflow_run.conclusion == 'Success' }}
-    name: Code style check
-    runs-on: ubuntu-latest
-    timeout-minutes: 20
-    strategy:
-      matrix:
-        php:
-          - '7.2'
-      fail-fast: true
-    
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v2
-      -
-        name: Setup php extension cache environment
-        id: cache-php-extensions
-        uses: shivammathur/cache-extensions@v1
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: ${{ env.PHP_EXTENSIONS }}
-          key: ${{ env.PHP_EXTENSIONS_CACHE_KEY }}
-      -
-        name: Cache PHP extensions
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.cache-php-extensions.outputs.dir }}
-          key: ${{ steps.cache-php-extensions.outputs.key }}
-          restore-keys: ${{ steps.cache-php-extensions.outputs.key }}
-      -
-        name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php }}
-          extensions: ${{ env.PHP_EXTENSIONS }}
-          ini-values: memory_limit=-1
-          coverage: none
-      -
-        name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      -
-        name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-      -
-        name: Install Composer dependencies
-        run: composer install --prefer-dist --no-progress --no-suggest --ansi --no-scripts
-      -
-        name: Run PHP-CS-Fixer fix
-        run: vendor/bin/php-cs-fixer fix --dry-run --diff --ansi
+#  php-cs-fixer:
+#    #if: ${{ github.event.workflow_run.conclusion == 'Success' }}
+#    name: Code style check
+#    runs-on: ubuntu-latest
+#    timeout-minutes: 20
+#    strategy:
+#      matrix:
+#        php:
+#          - '7.2'
+#      fail-fast: true
+#
+#    steps:
+#      -
+#        name: Checkout
+#        uses: actions/checkout@v2
+#      -
+#        name: Setup php extension cache environment
+#        id: cache-php-extensions
+#        uses: shivammathur/cache-extensions@v1
+#        with:
+#          php-version: ${{ matrix.php }}
+#          extensions: ${{ env.PHP_EXTENSIONS }}
+#          key: ${{ env.PHP_EXTENSIONS_CACHE_KEY }}
+#      -
+#        name: Cache PHP extensions
+#        uses: actions/cache@v2
+#        with:
+#          path: ${{ steps.cache-php-extensions.outputs.dir }}
+#          key: ${{ steps.cache-php-extensions.outputs.key }}
+#          restore-keys: ${{ steps.cache-php-extensions.outputs.key }}
+#      -
+#        name: Setup PHP
+#        uses: shivammathur/setup-php@v2
+#        with:
+#          php-version: ${{ matrix.php }}
+#          extensions: ${{ env.PHP_EXTENSIONS }}
+#          ini-values: memory_limit=-1
+#          coverage: none
+#      -
+#        name: Get Composer Cache Directory
+#        id: composer-cache
+#        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+#      -
+#        name: Cache dependencies
+#        uses: actions/cache@v2
+#        with:
+#          path: ${{ steps.composer-cache.outputs.dir }}
+#          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+#          restore-keys: ${{ runner.os }}-composer-
+#      -
+#        name: Install Composer dependencies
+#        run: composer install --prefer-dist --no-progress --no-suggest --ansi --no-scripts
+#      -
+#        name: Run PHP-CS-Fixer fix
+#        run: vendor/bin/php-cs-fixer fix --dry-run --diff --ansi
 
 
   php-stan:
@@ -88,7 +88,7 @@ jobs:
         php:
           - '7.2'
       fail-fast: true
-    
+
     steps:
       -
         name: Checkout
@@ -189,7 +189,7 @@ jobs:
           ini-values: date.timezone=Europe/Rome, memory_limit=-1
           coverage: xdebug
           tools: symfony
-      
+
       -
         name: Reveal env vars
         run: |
@@ -204,12 +204,12 @@ jobs:
           echo GITHUB_WORKSPACE  = $GITHUB_WORKSPACE
           echo GITHUB_SHA        = $GITHUB_SHA
           echo GITHUB_REF        = $GITHUB_REF
-      
+
       -
         name: Get Composer Cache Directory
         id: composer-cache
         run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-      
+
       -
         name: Cache dependencies
         uses: actions/cache@v2
@@ -217,7 +217,7 @@ jobs:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
-      
+
       -
         name: Install Composer dependencies
         run: composer install --prefer-dist --no-progress --no-suggest --ansi --no-scripts
@@ -228,16 +228,16 @@ jobs:
       #     php bin/console doctrine:migrations:migrate || echo "No migrations found or migration failed"
       #   env:
       #     DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
-      
+
       -
         name: Enable code coverage
         if: matrix.coverage
         run: echo "COVERAGE=1" >> $GITHUB_ENV
-      
+
       -
         name: Install PHPUnit
         run: bin/phpunit install
-      
+
       -
         name: Run Unit tests
         #if: ${{ matrix.php == '7.2' }}
@@ -248,7 +248,7 @@ jobs:
           else
             bin/phpunit --testsuite unit --colors=always
           fi
-      
+
       -
         name: Run Integration tests
         #if: ${{ matrix.php == '7.2' }}
@@ -266,7 +266,7 @@ jobs:
       #   name: Run webserver
       #   if: ${{ matrix.php == '7.2' }}
       #   run: symfony server:start --port=8080 --dir=public --daemon --no-tls
-      
+
       -
         name: Run Functional tests
         #if: ${{ matrix.php == '7.3' }}
@@ -289,7 +289,7 @@ jobs:
       #     flags: phpunit-tests
       #     name: codecov-php-7.3
       #     fail_ci_if_error: true
-      
+
       # -
       #   name: SonarCloud Change paths in clover.xml files before Scan
       #   #if: ${{ matrix.php == '7.3' }}
@@ -297,7 +297,7 @@ jobs:
       #     sed -i 's+/home/runner/work/pro-appointments/pro-appointments+/github/workspace+g' ./reports/phpunit/unit-test-clover.xml
       #     sed -i 's+/home/runner/work/pro-appointments/pro-appointments+/github/workspace+g' ./reports/phpunit/integration-test-clover.xml
       #     sed -i 's+/home/runner/work/pro-appointments/pro-appointments+/github/workspace+g' ./reports/phpunit/functional-test-clover.xml          #sed -i 's+/home/runner/work/component-value-objects/component-value-objects+/github/workspace+g' ./var/coverage/clover.xml
-      
+
       # -
       #   name: SonarCloud Scan And publication (only php-${{ matrix.php }})
       #   #if: ${{ matrix.php == '7.3' }}
@@ -317,7 +317,7 @@ jobs:
         if: success()
         uses: peter-evans/repository-dispatch@v1
         with:
-          token: ${{ secrets.SF4_BOILERPLATE_GHA_PAT }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           repository: ${{ github.repository }}
           event-type: pub-metrics
           client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
