@@ -1,13 +1,21 @@
 includes:
-    #- vendor/phpstan/phpstan-phpunit/extension.neon
-    #- vendor/phpstan/phpstan-strict-rules/rules.neon
+	- phpstan-baseline.neon
 
 parameters:
     level: 7
-    
+
     paths:
       - src
       - tests
 
+    tmpDir: var/tools/phpstan/
+
+    #bootstrapFiles:
+        #- bin/.phpunit/phpunit/vendor/autoload.php
+
     excludes_analyse:
         - '%currentWorkingDirectory%/tests/bootstrap.php'
+
+    checkMissingIterableValueType: false
+
+    inferPrivatePropertyTypeFromConstructor: true
