@@ -69,6 +69,18 @@ cs-fix: ## Fix code style issues
 	$(APP_CONTAINER) php vendor/bin/php-cs-fixer fix src --verbose
 
 
+.PHONY: coding-standard
+coding-standard: ## Fix code style issues
+	$(APP_CONTAINER) mkdir -p var/tools/ecs
+	$(APP_CONTAINER) php vendor/bin/ecs check --fix --verbose
+
+
+.PHONY: coding-standard-check
+coding-standard-check: ## Run code style analysis
+	$(APP_CONTAINER) mkdir -p var/tools/ecs
+	$(APP_CONTAINER) php vendor/bin/ecs check --verbose
+
+
 .PHONY: stan
 stan: ## Static analysis with phpstan
 	echo "    - Execution: phpstan"
