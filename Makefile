@@ -59,16 +59,6 @@ bash: ## Get bash inside application container
 	- docker-compose exec php bash
 
 
-.PHONY: cs
-cs: ## Run code style analysis
-	$(APP_CONTAINER) php vendor/bin/php-cs-fixer fix src --dry-run --verbose
-
-
-.PHONY: cs-fix
-cs-fix: ## Fix code style issues
-	$(APP_CONTAINER) php vendor/bin/php-cs-fixer fix src --verbose
-
-
 .PHONY: coding-standard
 coding-standard: ## Fix code style issues
 	$(APP_CONTAINER) mkdir -p var/tools/ecs
