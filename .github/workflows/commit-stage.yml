@@ -185,6 +185,9 @@ jobs:
             - name: Install Composer dependencies
               run: composer install --prefer-dist --no-progress --no-suggest --ansi --no-scripts
 
+            - name: Install phpstan
+              run: composer bin phpstan install
+
             - name: Run PHP-CS-Fixer fix
               run: vendor/bin/phpstan analyse --ansi
 
