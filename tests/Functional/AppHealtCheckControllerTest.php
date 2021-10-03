@@ -8,12 +8,12 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AppHealtCheckControllerTest extends WebTestCase
 {
-    public function testHeatCheck()
+    public function testHeatCheck(): void
     {
         $client = static::createClient();
 
         $client->request('GET', '/sys/healt/check');
 
-        $this->assertResponseIsSuccessful();
+        self::assertResponseIsSuccessful();
     }
 }
