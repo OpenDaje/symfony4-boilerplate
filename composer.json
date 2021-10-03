@@ -57,17 +57,12 @@
     },
     "autoload": {
         "psr-4": {
-            "App\\": "src/",
-            "OpenDaje\\SharedKernel\\": "core/SharedKernel/src/",
-            "OpenDaje\\Identity\\": "core/Identity/src/",
-            "OpenDaje\\lib\\": "lib/src/"
+            "App\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/",
-            "OpenDaje\\Tests\\SharedKernel\\": "core/SharedKernel/tests/",
-            "OpenDaje\\Tests\\Identity\\": "core/Identity/tests/"
+            "App\\Tests\\": "tests/"
         }
     },
     "scripts": {
