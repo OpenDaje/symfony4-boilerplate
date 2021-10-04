@@ -199,7 +199,7 @@ jobs:
         strategy:
             matrix:
                 php:
-                    - '7.2'
+                    - '7.4'
             fail-fast: true
 
         steps:
