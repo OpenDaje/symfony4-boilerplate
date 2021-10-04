@@ -188,7 +188,7 @@ jobs:
             - name: Install phpstan
               run: composer bin phpstan install
 
-            - name: Run PHP-CS-Fixer fix
+            - name: Run Phpstan
               run: vendor/bin/phpstan analyse --ansi
 
 
