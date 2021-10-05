@@ -78,7 +78,7 @@ jobs:
 
     ecs:
         name: Coding standard check
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-18.04
         timeout-minutes: 3
         strategy:
             matrix:
@@ -136,8 +136,8 @@ jobs:
 
     php-stan:
         name: Static Analysis check (phpstan)
-        runs-on: ubuntu-latest
-        timeout-minutes: 20
+        runs-on: ubuntu-18.04
+        timeout-minutes: 3
         strategy:
             matrix:
                 php:
@@ -194,7 +194,8 @@ jobs:
 
     phpunit:
         name: Code tests (PHP ${{ matrix.php }})
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-18.04
+        timeout-minutes: 3
         services:
             mysql:
                 image: mysql:5.7
@@ -315,7 +316,8 @@ jobs:
     ci-notify:
         name: ci-notify
         needs: [phpunit]
-        runs-on: ubuntu-latest
+        runs-on: ubuntu-18.04
+        timeout-minutes: 3
         steps:
             - name: Trigger Publish metrics workflow
               if: success()
