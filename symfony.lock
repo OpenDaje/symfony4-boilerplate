@@ -230,7 +230,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "master",
             "version": "4.1",
-            "ref": "70bbb50fccafba9165d6d2602c7975d6d677455e"
+            "ref": "2ba17ea3190d76e6e37a52378f6bca3d84891bc5"
         },
         "files": [
             ".env.test",
