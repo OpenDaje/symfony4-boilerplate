@@ -25,3 +25,15 @@ updates:
           versions: ["5.x", "6.x"]
         - dependency-name: "symfony/browser-kit"
           versions: ["5.x", "6.x"]
+
+
+  - commit-message:
+      include: "scope"
+      prefix: "github-actions"
+    directory: "/"
+    labels:
+      - "CI dependency"
+    open-pull-requests-limit: 10
+    package-ecosystem: "github-actions"
+    schedule:
+      interval: "daily"
