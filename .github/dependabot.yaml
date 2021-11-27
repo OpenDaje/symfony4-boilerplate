@@ -4,7 +4,7 @@ version: 2
 
 updates:
   - package-ecosystem: "composer"
-    target-branch: "main"
+    target-branch: "master"
     directory: "/"
     versioning-strategy: "increase-if-necessary"
     open-pull-requests-limit: 10
@@ -30,6 +30,60 @@ updates:
           versions: ["5.x", "6.x"]
 
 
+    #
+    # Tools dependecy track
+    #
+  - package-ecosystem: "composer"
+    target-branch: "master"
+    directory: "/tools/ecs"
+    versioning-strategy: "increase-if-necessary"
+    open-pull-requests-limit: 3
+    schedule:
+        interval: "daily"
+    assignees:
+        - "zerai"
+    commit-message:
+        include: "scope"
+        prefix: "composer"
+    labels:
+        - "tool dependency"
+
+
+  - package-ecosystem: "composer"
+    target-branch: "master"
+    directory: "/tools/phpstan"
+    versioning-strategy: "increase-if-necessary"
+    open-pull-requests-limit: 3
+    schedule:
+        interval: "daily"
+    assignees:
+        - "zerai"
+    commit-message:
+        include: "scope"
+        prefix: "composer"
+    labels:
+        - "tool dependency"
+
+
+  - package-ecosystem: "composer"
+    target-branch: "master"
+    directory: "/tools/psalm"
+    versioning-strategy: "increase-if-necessary"
+    open-pull-requests-limit: 3
+    schedule:
+        interval: "daily"
+    assignees:
+        - "zerai"
+    commit-message:
+        include: "scope"
+        prefix: "composer"
+    labels:
+        - "tool dependency"
+
+
+  #
+  # GHA dependecy track
+  #
   - package-ecosystem: "github-actions"
     directory: "/"
     open-pull-requests-limit: 10
