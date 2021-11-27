@@ -3,20 +3,20 @@
 version: 2
 
 updates:
-  - commit-message:
-      include: "scope"
-      prefix: "composer"
+  - package-ecosystem: "composer"
     target-branch: "main"
     directory: "/"
+    versioning-strategy: "increase-if-necessary"
+    open-pull-requests-limit: 10
+    schedule:
+        interval: "daily"
     assignees:
         - "zerai"
+    commit-message:
+      include: "scope"
+      prefix: "composer"
     labels:
       - "dependency"
-    open-pull-requests-limit: 10
-    package-ecosystem: "composer"
-    schedule:
-      interval: "daily"
-    versioning-strategy: "increase-if-necessary"
     ignore:
         - dependency-name: "symfony/framework-bundle"
           versions: ["5.x", "6.x"]
@@ -30,13 +30,16 @@ updates:
           versions: ["5.x", "6.x"]
 
 
-  - commit-message:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    open-pull-requests-limit: 10
+    schedule:
+        interval: "daily"
+    assignees:
+        - "zerai"
+    commit-message:
       include: "scope"
       prefix: "github-actions"
-    directory: "/"
     labels:
       - "CI dependency"
-    open-pull-requests-limit: 10
-    package-ecosystem: "github-actions"
-    schedule:
-      interval: "daily"
+
