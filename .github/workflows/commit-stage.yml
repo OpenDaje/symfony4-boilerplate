@@ -384,7 +384,7 @@ jobs:
         steps:
             - name: Trigger Publish metrics workflow
               if: success()
-              uses: peter-evans/repository-dispatch@v1
+              uses: peter-evans/repository-dispatch@v2
               with:
                 token: ${{ secrets.GITHUB_TOKEN }}
                 repository: ${{ github.repository }}
