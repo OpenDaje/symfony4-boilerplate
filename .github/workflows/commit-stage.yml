@@ -2,7 +2,14 @@ name: Commit stage
 
 on:
     workflow_call:
-
+        # Map the workflow outputs to job outputs
+        inputs:
+            triggering-sha:
+                required: true
+                type: string
+#        secrets:
+#            envPAT:
+#                required: true
 env:
     GITHUB_PAT: ${{ secrets.SF4_BOILERPLATE_GHA_PAT }}
     PHPUNIT_ARTIFACT_REPORT_FOLDER: ${{ secrets.CI_ENV_PHPUNIT_ARTIFACT_REPORT_FOLDER }}
@@ -18,6 +25,8 @@ jobs:
         steps:
             - name: Dump context
               uses: crazy-max/ghaction-dump-context@v1
+            - name: Dump input triggering-sha
+              run: echo triggering-sha ${{ inputs.triggering-sha }}
 
 #    triggering-workflow-info:
 #        name: Triggering workflow info
@@ -35,6 +44,9 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
+
+            - name: info triggering workflow - commit message
+              run: git log --oneline
 
             - name: Setup php extension cache environment
               id: cache-php-extensions
@@ -95,6 +107,9 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
+            - name: info triggering workflow - commit message
+              run: git log --oneline
+
             - name: Setup php extension cache environment
               id: cache-php-extensions
               uses: shivammathur/cache-extensions@v1
@@ -153,6 +168,9 @@ jobs:
             - name: Checkout
               uses: actions/checkout@v2
 
+            - name: info triggering workflow - commit message
+              run: git log --oneline
+
             - name: Setup php extension cache environment
               id: cache-php-extensions
               uses: shivammathur/cache-extensions@v1
@@ -210,6 +228,9 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
+
+            - name: info triggering workflow - commit message
+              run: git log --oneline
 
             - name: Setup php extension cache environment
               id: cache-php-extensions
@@ -285,6 +306,9 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v2
+
+            - name: info triggering workflow - commit message
+              run: git log --oneline
 
             - name: Setup php extension cache environment
               id: cache-php-extensions
@@ -382,18 +406,18 @@ jobs:
                   SYMFONY_DEPRECATIONS_HELPER: disabled
 
 
-    ci-notify:
-        name: ci-notify
-        needs: [phpunit]
-        runs-on: ubuntu-18.04
-        timeout-minutes: 3
-        steps:
-            - name: Trigger Publish metrics workflow
-              if: success()
-              uses: peter-evans/repository-dispatch@v2
-              with:
-                token: ${{ secrets.GITHUB_TOKEN }}
-                repository: ${{ github.repository }}
-                event-type: pub-metrics
-                client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
-        continue-on-error: true
+#    ci-notify:
+#        name: ci-notify
+#        needs: [phpunit]
+#        runs-on: ubuntu-18.04
+#        timeout-minutes: 3
+#        steps:
+#            - name: Trigger Publish metrics workflow
+#              if: success()
+#              uses: peter-evans/repository-dispatch@v2
+#              with:
+#                token: ${{ secrets.GITHUB_TOKEN }}
+#                repository: ${{ github.repository }}
+#                event-type: pub-metrics
+#                client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+#        continue-on-error: true
