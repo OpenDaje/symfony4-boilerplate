@@ -376,18 +376,18 @@ jobs:
                 SYMFONY_DEPRECATIONS_HELPER: disabled
 
 
-    ci-notify:
-        name: ci-notify
-        needs: [phpunit]
-        runs-on: ubuntu-18.04
-        timeout-minutes: 3
-        steps:
-            - name: Trigger Publish metrics workflow
-              if: success()
-              uses: peter-evans/repository-dispatch@v2
-              with:
-                token: ${{ secrets.GITHUB_TOKEN }}
-                repository: ${{ github.repository }}
-                event-type: pub-metrics
-                client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+#    ci-notify:
+#        name: ci-notify
+#        needs: [phpunit]
+#        runs-on: ubuntu-18.04
+#        timeout-minutes: 3
+#        steps:
+#            - name: Trigger Publish metrics workflow
+#              if: success()
+#              uses: peter-evans/repository-dispatch@v2
+#              with:
+#                token: ${{ secrets.GITHUB_TOKEN }}
+#                repository: ${{ github.repository }}
+#                event-type: pub-metrics
+#                client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
 
