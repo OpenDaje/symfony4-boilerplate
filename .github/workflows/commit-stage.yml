@@ -375,6 +375,27 @@ jobs:
                 DATABASE_URL: mysql://root:symfony@127.0.0.1:${{ job.services.mysql.ports['3306'] }}/symfony
                 SYMFONY_DEPRECATIONS_HELPER: disabled
 
+#            - name: Try composite action
+#              uses: OpenDaje/symfony4-boilerplate/.github/workflows/actions-composite/composer.yml@master
+#
+#              with:
+#                  who-to-greet: 'Mona the Octocat'
+#            - run: echo random-number ${{ steps.foo.outputs.random-number }}
+#              shell: bash
+
+
+    hello_world_job:
+        runs-on: ubuntu-latest
+        name: A job to say hello
+        steps:
+            - uses: actions/checkout@v3
+            - id: foo
+              uses: OpenDaje/symfony4-boilerplate/.github/workflows/actions-composite/composer.yml@master
+              with:
+                  who-to-greet: 'Mona the Octocat'
+            - run: echo random-number ${{ steps.foo.outputs.random-number }}
+              shell: bash
+
 
 #    ci-notify:
 #        name: ci-notify
