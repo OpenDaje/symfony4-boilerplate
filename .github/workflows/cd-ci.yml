@@ -1,0 +1,38 @@
+name: CD/CI
+
+on: [ push ]
+
+#env:
+#    GITHUB_PAT: ${{ secrets.SF4_BOILERPLATE_GHA_PAT }}
+#    PHPUNIT_ARTIFACT_REPORT_FOLDER: ${{ secrets.CI_ENV_PHPUNIT_ARTIFACT_REPORT_FOLDER }}
+#    PHPUNIT_ARTIFACT_REPORT_NAME: ${{ secrets.CI_ENV_PHPUNIT_ARTIFACT_REPORT_NAME }}
+#    COVERAGE: '0'
+#    PHP_EXTENSIONS: ctype, curl, gd, iconv, intl, opcache, openssl, mbstring, mysql, pdo_sqlite
+#    PHP_EXTENSIONS_CACHE_KEY: cache-php-extensions-v1
+
+jobs:
+#    triggering-workflow-info:
+#        runs-on: ubuntu-18.04
+#        name: Triggering workflow info
+#        steps:
+#            - name: Dump context
+#              uses: crazy-max/ghaction-dump-context@v1
+
+
+    call-commit-stage-workflow:
+        name: Commit Stage
+        uses: OpenDaje/symfony4-boilerplate/.github/workflows/commit-stage.yml@master
+
+
+    call-acceptance-stage-workflow:
+        name: Acceptance Stage
+        needs:
+            - call-commit-stage-workflow
+        uses: OpenDaje/symfony4-boilerplate/.github/workflows/acceptance-stage.yml@master
+
+#    call-workflow-passing-data:
+#        uses: octo-org/example-repo/.github/workflows/workflow-B.yml@master
+#        with:
+#            username: mona
+#        secrets:
+#            token: ${{ secrets.TOKEN }}
