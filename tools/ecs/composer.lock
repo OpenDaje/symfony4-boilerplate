@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4fa5d6f8ca183cf59cce8ebf97ed4da",
+    "content-hash": "88ef3f11eaf2e1dba308bbcc368edaa9",
     "packages": [],
     "packages-dev": [
         {
             "name": "symplify/easy-coding-standard",
-            "version": "10.2.9",
+            "version": "11.1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symplify/easy-coding-standard.git",
-                "reference": "6e0ea4030de2f7db44e0605c62699961e8c01a14"
+                "reference": "9374f0e3396d427180d1ae202829191711d7900e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/6e0ea4030de2f7db44e0605c62699961e8c01a14",
-                "reference": "6e0ea4030de2f7db44e0605c62699961e8c01a14",
+                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/9374f0e3396d427180d1ae202829191711d7900e",
+                "reference": "9374f0e3396d427180d1ae202829191711d7900e",
                 "shasum": ""
             },
             "require": {
@@ -48,7 +48,7 @@
             ],
             "description": "Prefixed scoped version of ECS package",
             "support": {
-                "source": "https://github.com/symplify/easy-coding-standard/tree/10.2.9"
+                "source": "https://github.com/symplify/easy-coding-standard/tree/11.1.11"
             },
             "funding": [
                 {
@@ -60,7 +60,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-06-04T12:42:50+00:00"
+            "time": "2022-10-23T14:58:27+00:00"
         }
     ],
     "aliases": [],
