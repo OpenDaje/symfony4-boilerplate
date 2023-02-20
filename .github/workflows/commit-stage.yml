@@ -24,7 +24,7 @@ jobs:
         name: Triggering workflow info
         steps:
             - name: Dump context
-              uses: crazy-max/ghaction-dump-context@v1
+              uses: crazy-max/ghaction-dump-context@v2
             - name: Dump input triggering-sha
               run: echo triggering-sha ${{ inputs.triggering-sha }}
 
