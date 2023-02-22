@@ -4,21 +4,21 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "b4fa5d6f8ca183cf59cce8ebf97ed4da",
+    "content-hash": "7b68391afa5b0debb02b6d4ec5497aad",
     "packages": [],
     "packages-dev": [
         {
             "name": "symplify/easy-coding-standard",
-            "version": "10.2.9",
+            "version": "11.2.9",
             "source": {
                 "type": "git",
-                "url": "https://github.com/symplify/easy-coding-standard.git",
-                "reference": "6e0ea4030de2f7db44e0605c62699961e8c01a14"
+                "url": "https://github.com/easy-coding-standard/easy-coding-standard.git",
+                "reference": "947267668efb055bf78c7b68416cb206285f21d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symplify/easy-coding-standard/zipball/6e0ea4030de2f7db44e0605c62699961e8c01a14",
-                "reference": "6e0ea4030de2f7db44e0605c62699961e8c01a14",
+                "url": "https://api.github.com/repos/easy-coding-standard/easy-coding-standard/zipball/947267668efb055bf78c7b68416cb206285f21d4",
+                "reference": "947267668efb055bf78c7b68416cb206285f21d4",
                 "shasum": ""
             },
             "require": {
@@ -32,11 +32,6 @@
                 "bin/ecs"
             ],
             "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "10.3-dev"
-                }
-            },
             "autoload": {
                 "files": [
                     "bootstrap.php"
@@ -46,9 +41,10 @@
             "license": [
                 "MIT"
             ],
-            "description": "Prefixed scoped version of ECS package",
+            "description": "Use Coding Standard with 0-knowledge of PHP-CS-Fixer and PHP_CodeSniffer",
             "support": {
-                "source": "https://github.com/symplify/easy-coding-standard/tree/10.2.9"
+                "issues": "https://github.com/easy-coding-standard/easy-coding-standard/issues",
+                "source": "https://github.com/easy-coding-standard/easy-coding-standard/tree/11.2.9"
             },
             "funding": [
                 {
@@ -60,7 +56,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-06-04T12:42:50+00:00"
+            "time": "2023-02-21T11:31:15+00:00"
         }
     ],
     "aliases": [],
