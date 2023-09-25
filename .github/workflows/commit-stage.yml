@@ -43,7 +43,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v3.4.0
+              uses: actions/checkout@v4.1.0
 
             - name: info triggering workflow - commit message
               run: git log --oneline
@@ -105,7 +105,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v3.4.0
+              uses: actions/checkout@v4.1.0
 
             - name: info triggering workflow - commit message
               run: git log --oneline
@@ -166,7 +166,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v3.4.0
+              uses: actions/checkout@v4.1.0
 
             - name: info triggering workflow - commit message
               run: git log --oneline
@@ -227,7 +227,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v3.4.0
+              uses: actions/checkout@v4.1.0
 
             - name: info triggering workflow - commit message
               run: git log --oneline
@@ -305,7 +305,7 @@ jobs:
 
         steps:
             - name: Checkout
-              uses: actions/checkout@v3.4.0
+              uses: actions/checkout@v4.1.0
 
             - name: info triggering workflow - commit message
               run: git log --oneline
